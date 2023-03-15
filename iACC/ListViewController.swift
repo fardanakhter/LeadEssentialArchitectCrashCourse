@@ -157,22 +157,18 @@ class ListViewController: UITableViewController {
 							self?.tableView.reloadData()
 							
 						case let .failure(error):
-							let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-							alert.addAction(UIAlertAction(title: "Ok", style: .default))
-                            self?.showDetailViewController(alert, sender: self?.presenterVC)
+                            self?.showErrorAlert(error)
 						}
 						self?.refreshControl?.endRefreshing()
 					}
 				}
 			} else {
-				let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
-				alert.addAction(UIAlertAction(title: "Ok", style: .default))
-                self.showDetailViewController(alert, sender: presenterVC)
+                self.showErrorAlert(error)
 				self.refreshControl?.endRefreshing()
 			}
 		}
 	}
-	
+    
 	override func numberOfSections(in tableView: UITableView) -> Int {
 		1
 	}
@@ -192,6 +188,14 @@ class ListViewController: UITableViewController {
 		let item = items[indexPath.row]
         item.selection()
 	}
+}
+
+extension UIViewController {
+    func showErrorAlert(_ error: Error) {
+        let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Ok", style: .default))
+        showDetailViewController(alert, sender: presenterVC)
+    }
 }
 
 // MARK: - UIViewController + Friend
