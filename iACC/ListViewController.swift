@@ -197,34 +197,48 @@ class ListViewController: UITableViewController {
 	}
 }
 
+class ItemViewModel {
+    
+    let titleText: String!
+    let detailText: String!
+    
+    init(_ item: Any, longDateStyle: Bool) {
+        if let friend = item as? Friend {
+            self.titleText = friend.name
+            self.detailText = friend.phone
+        } else if let card = item as? Card {
+            self.titleText = card.number
+            self.detailText = card.holder
+        } else if let transfer = item as? Transfer {
+            let numberFormatter = Formatters.number
+            numberFormatter.numberStyle = .currency
+            numberFormatter.currencyCode = transfer.currencyCode
+            
+            let amount = numberFormatter.string(from: transfer.amount as NSNumber)!
+            self.titleText = "\(amount) • \(transfer.description)"
+            
+            let dateFormatter = Formatters.date
+            if longDateStyle {
+                dateFormatter.dateStyle = .long
+                dateFormatter.timeStyle = .short
+                self.detailText = "Sent to: \(transfer.recipient) on \(dateFormatter.string(from: transfer.date))"
+            } else {
+                dateFormatter.dateStyle = .short
+                dateFormatter.timeStyle = .short
+                self.detailText = "Received from: \(transfer.sender) on \(dateFormatter.string(from: transfer.date))"
+            }
+        } else {
+            fatalError("unknown item: \(item)")
+        }
+    }
+    
+    
+}
+
 extension UITableViewCell {
 	func configure(_ item: Any, longDateStyle: Bool) {
-		if let friend = item as? Friend {
-			textLabel?.text = friend.name
-			detailTextLabel?.text = friend.phone
-		} else if let card = item as? Card {
-			textLabel?.text = card.number
-			detailTextLabel?.text = card.holder
-		} else if let transfer = item as? Transfer {
-			let numberFormatter = Formatters.number
-			numberFormatter.numberStyle = .currency
-			numberFormatter.currencyCode = transfer.currencyCode
-			
-			let amount = numberFormatter.string(from: transfer.amount as NSNumber)!
-			textLabel?.text = "\(amount) • \(transfer.description)"
-			
-			let dateFormatter = Formatters.date
-			if longDateStyle {
-				dateFormatter.dateStyle = .long
-				dateFormatter.timeStyle = .short
-				detailTextLabel?.text = "Sent to: \(transfer.recipient) on \(dateFormatter.string(from: transfer.date))"
-			} else {
-				dateFormatter.dateStyle = .short
-				dateFormatter.timeStyle = .short
-				detailTextLabel?.text = "Received from: \(transfer.sender) on \(dateFormatter.string(from: transfer.date))"
-			}
-		} else {
-			fatalError("unknown item: \(item)")
-		}
+        let vm = ItemViewModel(item, longDateStyle: longDateStyle)
+        textLabel?.text = vm.titleText
+        detailTextLabel?.text = vm.detailText
 	}
 }
