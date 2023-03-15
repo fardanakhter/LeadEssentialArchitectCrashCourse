@@ -159,7 +159,7 @@ class ListViewController: UITableViewController {
 						case let .failure(error):
 							let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
 							alert.addAction(UIAlertAction(title: "Ok", style: .default))
-							self?.presenterVC.present(alert, animated: true)
+                            self?.showDetailViewController(alert, sender: self?.presenterVC)
 						}
 						self?.refreshControl?.endRefreshing()
 					}
@@ -167,7 +167,7 @@ class ListViewController: UITableViewController {
 			} else {
 				let alert = UIAlertController(title: "Error", message: error.localizedDescription, preferredStyle: .alert)
 				alert.addAction(UIAlertAction(title: "Ok", style: .default))
-				self.presenterVC.present(alert, animated: true)
+                self.showDetailViewController(alert, sender: presenterVC)
 				self.refreshControl?.endRefreshing()
 			}
 		}
@@ -192,40 +192,49 @@ class ListViewController: UITableViewController {
 		let item = items[indexPath.row]
         item.selection()
 	}
-    
+}
+
+// MARK: - UIViewController + Friend
+extension UIViewController {
     func select(_ friend: Friend) {
         let vc = FriendDetailsViewController()
         vc.friend = friend
-        navigationController?.pushViewController(vc, animated: true)
+        show(vc, sender: self)
     }
-	
+    
+    @objc func addCard() {
+        show(AddCardViewController(), sender: self)
+    }
+    
+    @objc func addFriend() {
+        show(AddFriendViewController(), sender: self)
+    }
+}
+
+// MARK: - UIViewController + Card
+extension UIViewController {
     func select(_ card: Card) {
         let vc = CardDetailsViewController()
         vc.card = card
-        navigationController?.pushViewController(vc, animated: true)
+        show(vc, sender: self)
     }
-    
+}
+ 
+// MARK: - UIViewController + Transfer
+extension UIViewController {
     func select(_ transfer: Transfer) {
         let vc = TransferDetailsViewController()
         vc.transfer = transfer
-        navigationController?.pushViewController(vc, animated: true)
+        show(vc, sender: self)
     }
     
-	@objc func addCard() {
-		navigationController?.pushViewController(AddCardViewController(), animated: true)
-	}
-	
-	@objc func addFriend() {
-		navigationController?.pushViewController(AddFriendViewController(), animated: true)
-	}
-	
-	@objc func sendMoney() {
-		navigationController?.pushViewController(SendMoneyViewController(), animated: true)
-	}
-	
-	@objc func requestMoney() {
-		navigationController?.pushViewController(RequestMoneyViewController(), animated: true)
-	}
+    @objc func sendMoney() {
+        show(SendMoneyViewController(), sender: self)
+    }
+    
+    @objc func requestMoney() {
+        show(RequestMoneyViewController(), sender: self)
+    }
 }
 
 struct ItemViewModel {
@@ -234,6 +243,7 @@ struct ItemViewModel {
     let selection: () -> Void
 }
 
+// MARK: - ItemViewModel + Friend
 extension ItemViewModel {
     init(_ friend: Friend, selection: @escaping () -> Void) {
         self.titleText = friend.name
@@ -242,6 +252,7 @@ extension ItemViewModel {
     }
 }
 
+// MARK: - ItemViewModel + Card
 extension ItemViewModel {
     init(_ card: Card, selection: @escaping () -> Void) {
         self.titleText = card.number
@@ -250,6 +261,7 @@ extension ItemViewModel {
     }
 }
 
+// MARK: - ItemViewModel + Transfer
 extension ItemViewModel {
     init(_ transfer: Transfer, longDateStyle: Bool, selection: @escaping () -> Void) {
         let numberFormatter = Formatters.number
