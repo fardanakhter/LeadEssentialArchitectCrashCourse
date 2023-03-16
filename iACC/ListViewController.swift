@@ -206,10 +206,6 @@ extension UIViewController {
         show(vc, sender: self)
     }
     
-    @objc func addCard() {
-        show(AddCardViewController(), sender: self)
-    }
-    
     @objc func addFriend() {
         show(AddFriendViewController(), sender: self)
     }
@@ -221,6 +217,10 @@ extension UIViewController {
         let vc = CardDetailsViewController()
         vc.card = card
         show(vc, sender: self)
+    }
+    
+    @objc func addCard() {
+        show(AddCardViewController(), sender: self)
     }
 }
  
