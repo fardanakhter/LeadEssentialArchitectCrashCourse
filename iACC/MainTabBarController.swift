@@ -56,45 +56,61 @@ class MainTabBarController: UITabBarController {
 	
 	private func makeFriendsList() -> ListViewController {
 		let vc = ListViewController()
-		vc.fromFriendsScreen = true
-        vc.service = FriendsAPIItemServiceAdaptor(api: FriendsAPI.shared,
-                                                  cache: User.shared?.isPremium == true ? friendsCache : NullFriendsCache(),
-                                                  select: { [weak vc] friend in vc?.select(friend) })
+        vc.title = "Friends"
+        vc.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: vc, action: #selector(addFriend))
+        
+        let isPremium = User.shared?.isPremium == true
+        
+        let service = FriendsAPIItemServiceAdaptor(api: FriendsAPI.shared,
+                                                  cache: isPremium ? friendsCache : NullFriendsCache(),
+                                                   select: { [weak vc] friend in vc?.select(friend) }).retry(2)
+        
+        let cache = FriendsCacheItemServiceAdaptor(cache: friendsCache,
+                                                   select: { [weak vc] friend  in vc?.select(friend) })
+        
+        
+        vc.service = isPremium ? service.fallback(cache) : service
+        
 		return vc
 	}
 	
 	private func makeSentTransfersList() -> ListViewController {
 		let vc = ListViewController()
-		vc.fromSentTransfersScreen = true
-        vc.service = TransfersAPIItemServiceAdaptor(api: TransfersAPI.shared,
+        vc.longDateStyle = true
+        vc.navigationItem.title = "Sent"
+        vc.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Send", style: .done, target: vc, action: #selector(sendMoney))
+        let service = TransfersAPIItemServiceAdaptor(api: TransfersAPI.shared,
                                                     longDateStyle: true,
                                                     fromSentTransfersScreen: true,
                                                     select: { [weak vc] transfer in vc?.select(transfer) })
+        vc.service = service.retry(1)
+        
 		return vc
 	}
 	
 	private func makeReceivedTransfersList() -> ListViewController {
 		let vc = ListViewController()
-		vc.fromReceivedTransfersScreen = true
-        vc.service = TransfersAPIItemServiceAdaptor(api: TransfersAPI.shared,
+        vc.longDateStyle = false
+        vc.navigationItem.title = "Received"
+        vc.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Request", style: .done, target: vc, action: #selector(requestMoney))
+        let service = TransfersAPIItemServiceAdaptor(api: TransfersAPI.shared,
                                                     longDateStyle: false,
                                                     fromSentTransfersScreen: false,
                                                     select: { [weak vc] transfer in vc?.select(transfer) })
+        vc.service = service.retry(1)
+        
 		return vc
 	}
 	
 	private func makeCardsList() -> ListViewController {
 		let vc = ListViewController()
-		vc.fromCardsScreen = true
-        vc.service = CardsAPIItemServiceAdaptor(api: CardAPI.shared,
+        vc.title = "Cards"
+        vc.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: vc, action: #selector(addCard))
+        let service = CardsAPIItemServiceAdaptor(api: CardAPI.shared,
                                                 select: { [weak vc] card in vc?.select(card) })
+        vc.service = service
+        
 		return vc
 	}
 	
-}
-
-class NullFriendsCache: FriendsCache {
-    override func save(_ newFriends: [Friend]) {
-        // do nothing
-    }
 }

@@ -24,3 +24,19 @@ extension DispatchQueue {
 		}
 	}
 }
+
+extension ItemService {
+    func fallback(_ fallback: ItemService) -> ItemService {
+        ItemServiceWithFallback(primary: self, fallback: fallback)
+    }
+    
+    func retry(_ times: UInt) -> ItemService {
+        var service: ItemService = self
+        for _ in 0..<times {
+            service = service.fallback(self)
+        }
+        return service
+    }
+}
+
+

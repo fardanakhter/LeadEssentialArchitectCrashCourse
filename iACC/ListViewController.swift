@@ -12,54 +12,13 @@ class ListViewController: UITableViewController {
     
     var items = [ItemViewModel]()
     var service: ItemService?
-	var retryCount = 0
-	var maxRetryCount = 0
-	var shouldRetry = false
-	
 	var longDateStyle = false
-	
-	var fromReceivedTransfersScreen = false
-	var fromSentTransfersScreen = false
-	var fromCardsScreen = false
-	var fromFriendsScreen = false
-	
-	override func viewDidLoad() {
+
+    override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		refreshControl = UIRefreshControl()
 		refreshControl?.addTarget(self, action: #selector(refresh), for: .valueChanged)
-		
-		if fromFriendsScreen {
-			shouldRetry = true
-			maxRetryCount = 2
-			
-			title = "Friends"
-			
-			navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addFriend))
-			
-		} else if fromCardsScreen {
-			shouldRetry = false
-			
-			title = "Cards"
-			
-			navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addCard))
-			
-		} else if fromSentTransfersScreen {
-			shouldRetry = true
-			maxRetryCount = 1
-			longDateStyle = true
-
-			navigationItem.title = "Sent"
-			navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Send", style: .done, target: self, action: #selector(sendMoney))
-
-		} else if fromReceivedTransfersScreen {
-			shouldRetry = true
-			maxRetryCount = 1
-			longDateStyle = false
-			
-			navigationItem.title = "Received"
-			navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Request", style: .done, target: self, action: #selector(requestMoney))
-		}
 	}
 	
 	override func viewWillAppear(_ animated: Bool) {
@@ -72,68 +31,21 @@ class ListViewController: UITableViewController {
 	
 	@objc private func refresh() {
 		refreshControl?.beginRefreshing()
-		if fromFriendsScreen {
-            service?.loadItems { [weak self] result in
-                self?.handleAPIResult(result)
-			}
-            
-		} else if fromCardsScreen {
-            service?.loadItems { [weak self] result in
-                self?.handleAPIResult(result)
-			}
-            
-		} else if fromSentTransfersScreen || fromReceivedTransfersScreen {
-            service?.loadItems { [weak self] result in    
-                self?.handleAPIResult(result)
-			}
-		} else {
-			fatalError("unknown context")
-		}
+        service?.loadItems { [weak self] result in
+            self?.handleAPIResult(result)
+        }
 	}
 	
 	private func handleAPIResult(_ result: Result<[ItemViewModel], Error>) {
 		switch result {
 		case let .success(items):
-
-			self.retryCount = 0
 			self.items = items
 			self.refreshControl?.endRefreshing()
 			self.tableView.reloadData()
 			
 		case let .failure(error):
-			if shouldRetry && retryCount < maxRetryCount {
-				retryCount += 1
-				
-				refresh()
-				return
-			}
-			
-			retryCount = 0
-			
-			if fromFriendsScreen && User.shared?.isPremium == true {
-				(UIApplication.shared.connectedScenes.first?.delegate as! SceneDelegate).cache.loadFriends { [weak self] result in
-					DispatchQueue.mainAsyncIfNeeded {
-						switch result {
-						case let .success(items):
-                            
-                            self?.items = items.map({ friend in
-                                ItemViewModel(friend, selection: { [weak self] in
-                                    self?.select(friend)
-                                })
-                            })
-                            
-							self?.tableView.reloadData()
-							
-						case let .failure(error):
-                            self?.showErrorAlert(error)
-						}
-						self?.refreshControl?.endRefreshing()
-					}
-				}
-			} else {
-                self.showErrorAlert(error)
-				self.refreshControl?.endRefreshing()
-			}
+            self.showErrorAlert(error)
+            self.refreshControl?.endRefreshing()
 		}
 	}
     

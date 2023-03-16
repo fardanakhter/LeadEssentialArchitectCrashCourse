@@ -43,6 +43,8 @@
 		08927BD4268618AC009195BD /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08927BCA268618AC009195BD /* User.swift */; };
 		08927BD5268618AC009195BD /* FriendsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08927BCB268618AC009195BD /* FriendsAPI.swift */; };
 		08927BD6268618AC009195BD /* NotImplementedViewControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08927BCC268618AC009195BD /* NotImplementedViewControllers.swift */; };
+		7782D16029C3C42800F2EAF2 /* FriendsCacheItemServiceAdaptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7782D15F29C3C42800F2EAF2 /* FriendsCacheItemServiceAdaptor.swift */; };
+		7782D16229C3C43A00F2EAF2 /* ItemServiceWithFallback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7782D16129C3C43A00F2EAF2 /* ItemServiceWithFallback.swift */; };
 		77D6B39A29C39EA600ED6C3F /* FriendsAPIItemServiceAdaptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D6B39929C39EA600ED6C3F /* FriendsAPIItemServiceAdaptor.swift */; };
 		77D6B39C29C39F2400ED6C3F /* CardsAPIItemServiceAdaptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D6B39B29C39F2400ED6C3F /* CardsAPIItemServiceAdaptor.swift */; };
 		77D6B39E29C3A05700ED6C3F /* TransfersAPIItemServiceAdaptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D6B39D29C3A05700ED6C3F /* TransfersAPIItemServiceAdaptor.swift */; };
@@ -99,6 +101,8 @@
 		08927BCA268618AC009195BD /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		08927BCB268618AC009195BD /* FriendsAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FriendsAPI.swift; sourceTree = "<group>"; };
 		08927BCC268618AC009195BD /* NotImplementedViewControllers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotImplementedViewControllers.swift; sourceTree = "<group>"; };
+		7782D15F29C3C42800F2EAF2 /* FriendsCacheItemServiceAdaptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsCacheItemServiceAdaptor.swift; sourceTree = "<group>"; };
+		7782D16129C3C43A00F2EAF2 /* ItemServiceWithFallback.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemServiceWithFallback.swift; sourceTree = "<group>"; };
 		77D6B39929C39EA600ED6C3F /* FriendsAPIItemServiceAdaptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsAPIItemServiceAdaptor.swift; sourceTree = "<group>"; };
 		77D6B39B29C39F2400ED6C3F /* CardsAPIItemServiceAdaptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsAPIItemServiceAdaptor.swift; sourceTree = "<group>"; };
 		77D6B39D29C3A05700ED6C3F /* TransfersAPIItemServiceAdaptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransfersAPIItemServiceAdaptor.swift; sourceTree = "<group>"; };
@@ -224,6 +228,7 @@
 		08927B912686183A009195BD /* iACC */ = {
 			isa = PBXGroup;
 			children = (
+				7782D16329C3C46100F2EAF2 /* Composition Adaptors */,
 				08927B922686183A009195BD /* AppDelegate.swift */,
 				08927B942686183A009195BD /* SceneDelegate.swift */,
 				08040FFB268B4C1D0062A93B /* MainTabBarController.swift */,
@@ -234,13 +239,10 @@
 				08927BCA268618AC009195BD /* User.swift */,
 				08927BCB268618AC009195BD /* FriendsAPI.swift */,
 				08927BC7268618AC009195BD /* FriendsCache.swift */,
-				77D6B39929C39EA600ED6C3F /* FriendsAPIItemServiceAdaptor.swift */,
 				08927BC8268618AC009195BD /* TransfersAPI.swift */,
 				08927BC6268618AC009195BD /* CardAPI.swift */,
-				77D6B39B29C39F2400ED6C3F /* CardsAPIItemServiceAdaptor.swift */,
 				080833E1268F69C200A8099A /* ArticlesAPI.swift */,
 				08927BC22686185C009195BD /* Supporting Files */,
-				77D6B39D29C3A05700ED6C3F /* TransfersAPIItemServiceAdaptor.swift */,
 			);
 			path = iACC;
 			sourceTree = "<group>";
@@ -265,6 +267,18 @@
 				08927BA02686183B009195BD /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		7782D16329C3C46100F2EAF2 /* Composition Adaptors */ = {
+			isa = PBXGroup;
+			children = (
+				7782D16129C3C43A00F2EAF2 /* ItemServiceWithFallback.swift */,
+				77D6B39929C39EA600ED6C3F /* FriendsAPIItemServiceAdaptor.swift */,
+				7782D15F29C3C42800F2EAF2 /* FriendsCacheItemServiceAdaptor.swift */,
+				77D6B39B29C39F2400ED6C3F /* CardsAPIItemServiceAdaptor.swift */,
+				77D6B39D29C3A05700ED6C3F /* TransfersAPIItemServiceAdaptor.swift */,
+			);
+			name = "Composition Adaptors";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -367,6 +381,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				7782D16029C3C42800F2EAF2 /* FriendsCacheItemServiceAdaptor.swift in Sources */,
 				08927B932686183A009195BD /* AppDelegate.swift in Sources */,
 				08927BCF268618AC009195BD /* ListViewController.swift in Sources */,
 				08040FFC268B4C1D0062A93B /* MainTabBarController.swift in Sources */,
@@ -376,6 +391,7 @@
 				08927BD5268618AC009195BD /* FriendsAPI.swift in Sources */,
 				08927BD1268618AC009195BD /* FriendsCache.swift in Sources */,
 				080833E0268F609C00A8099A /* Helpers.swift in Sources */,
+				7782D16229C3C43A00F2EAF2 /* ItemServiceWithFallback.swift in Sources */,
 				08927BCD268618AC009195BD /* SegmentNavigationViewController.swift in Sources */,
 				080833E2268F69C200A8099A /* ArticlesAPI.swift in Sources */,
 				77D6B39C29C39F2400ED6C3F /* CardsAPIItemServiceAdaptor.swift in Sources */,
