@@ -79,15 +79,9 @@ class ListViewController: UITableViewController {
             
 		} else if fromCardsScreen {
 			
-            CardAPI.shared.loadCards { [weak self] result in
+            service?.loadItems { [weak self] result in
 				DispatchQueue.mainAsyncIfNeeded {
-                    self?.handleAPIResult(result.map({ cards in
-                        cards.map { card in
-                            ItemViewModel(card, selection: { [weak self] in
-                                self?.select(card)
-                            })
-                        }
-                    }))
+                    self?.handleAPIResult(result)
 				}
 			}
             

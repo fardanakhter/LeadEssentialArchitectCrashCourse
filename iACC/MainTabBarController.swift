@@ -78,6 +78,8 @@ class MainTabBarController: UITabBarController {
 	private func makeCardsList() -> ListViewController {
 		let vc = ListViewController()
 		vc.fromCardsScreen = true
+        vc.service = CardsAPIItemServiceAdaptor(api: CardAPI.shared,
+                                                select: { [weak vc] card in vc?.select(card) })
 		return vc
 	}
 	
