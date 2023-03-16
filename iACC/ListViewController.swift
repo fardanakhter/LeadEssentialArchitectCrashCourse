@@ -4,9 +4,14 @@
 
 import UIKit
 
+protocol ItemService {
+    func loadItems(completion: @escaping (Result<[ItemViewModel], Error>) -> Void)
+}
+
 class ListViewController: UITableViewController {
-	var items = [ItemViewModel]()
-	
+    
+    var items = [ItemViewModel]()
+    var service: ItemService?
 	var retryCount = 0
 	var maxRetryCount = 0
 	var shouldRetry = false
@@ -68,22 +73,8 @@ class ListViewController: UITableViewController {
 	@objc private func refresh() {
 		refreshControl?.beginRefreshing()
 		if fromFriendsScreen {
-            
-			FriendsAPI.shared.loadFriends { [weak self] result in
-				DispatchQueue.mainAsyncIfNeeded {
-                    self?.handleAPIResult(result.map({ friends in
-                        
-                        if User.shared?.isPremium == true {
-                            (UIApplication.shared.connectedScenes.first?.delegate as! SceneDelegate).cache.save(friends)
-                        }
-                        
-                        return friends.map { friend in
-                            ItemViewModel(friend, selection: { [weak self] in
-                                self?.select(friend)
-                            })
-                        }
-                    }))
-				}
+            service?.loadItems { [weak self] result in
+                self?.handleAPIResult(result)
 			}
             
 		} else if fromCardsScreen {

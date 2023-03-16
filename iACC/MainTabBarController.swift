@@ -6,9 +6,12 @@ import UIKit
 
 class MainTabBarController: UITabBarController {
 	
-	convenience init() {
+    var friendsCache: FriendsCache!
+    
+    convenience init(friendsCache: FriendsCache) {
 		self.init(nibName: nil, bundle: nil)
-		self.setupViewController()
+        self.friendsCache = friendsCache
+        self.setupViewController()
 	}
 
 	private func setupViewController() {
@@ -54,6 +57,9 @@ class MainTabBarController: UITabBarController {
 	private func makeFriendsList() -> ListViewController {
 		let vc = ListViewController()
 		vc.fromFriendsScreen = true
+        vc.service = FriendsAPIItemServiceAdaptor(api: FriendsAPI.shared,
+                                                  cache: User.shared?.isPremium == true ? friendsCache : NullFriendsCache(),
+                                                  select: { [weak vc] friend in vc?.select(friend) })
 		return vc
 	}
 	
@@ -75,4 +81,10 @@ class MainTabBarController: UITabBarController {
 		return vc
 	}
 	
+}
+
+class NullFriendsCache: FriendsCache {
+    override func save(_ newFriends: [Friend]) {
+        // do nothing
+    }
 }
