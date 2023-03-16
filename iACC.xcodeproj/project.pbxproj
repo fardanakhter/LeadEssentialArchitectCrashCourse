@@ -45,6 +45,7 @@
 		08927BD6268618AC009195BD /* NotImplementedViewControllers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 08927BCC268618AC009195BD /* NotImplementedViewControllers.swift */; };
 		77D6B39A29C39EA600ED6C3F /* FriendsAPIItemServiceAdaptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D6B39929C39EA600ED6C3F /* FriendsAPIItemServiceAdaptor.swift */; };
 		77D6B39C29C39F2400ED6C3F /* CardsAPIItemServiceAdaptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D6B39B29C39F2400ED6C3F /* CardsAPIItemServiceAdaptor.swift */; };
+		77D6B39E29C3A05700ED6C3F /* TransfersAPIItemServiceAdaptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 77D6B39D29C3A05700ED6C3F /* TransfersAPIItemServiceAdaptor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -100,6 +101,7 @@
 		08927BCC268618AC009195BD /* NotImplementedViewControllers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotImplementedViewControllers.swift; sourceTree = "<group>"; };
 		77D6B39929C39EA600ED6C3F /* FriendsAPIItemServiceAdaptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendsAPIItemServiceAdaptor.swift; sourceTree = "<group>"; };
 		77D6B39B29C39F2400ED6C3F /* CardsAPIItemServiceAdaptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsAPIItemServiceAdaptor.swift; sourceTree = "<group>"; };
+		77D6B39D29C3A05700ED6C3F /* TransfersAPIItemServiceAdaptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransfersAPIItemServiceAdaptor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -235,9 +237,10 @@
 				77D6B39929C39EA600ED6C3F /* FriendsAPIItemServiceAdaptor.swift */,
 				08927BC8268618AC009195BD /* TransfersAPI.swift */,
 				08927BC6268618AC009195BD /* CardAPI.swift */,
+				77D6B39B29C39F2400ED6C3F /* CardsAPIItemServiceAdaptor.swift */,
 				080833E1268F69C200A8099A /* ArticlesAPI.swift */,
 				08927BC22686185C009195BD /* Supporting Files */,
-				77D6B39B29C39F2400ED6C3F /* CardsAPIItemServiceAdaptor.swift */,
+				77D6B39D29C3A05700ED6C3F /* TransfersAPIItemServiceAdaptor.swift */,
 			);
 			path = iACC;
 			sourceTree = "<group>";
@@ -376,6 +379,7 @@
 				08927BCD268618AC009195BD /* SegmentNavigationViewController.swift in Sources */,
 				080833E2268F69C200A8099A /* ArticlesAPI.swift in Sources */,
 				77D6B39C29C39F2400ED6C3F /* CardsAPIItemServiceAdaptor.swift in Sources */,
+				77D6B39E29C3A05700ED6C3F /* TransfersAPIItemServiceAdaptor.swift in Sources */,
 				08927B952686183A009195BD /* SceneDelegate.swift in Sources */,
 				08927BD2268618AC009195BD /* TransfersAPI.swift in Sources */,
 				08927BD4268618AC009195BD /* User.swift in Sources */,

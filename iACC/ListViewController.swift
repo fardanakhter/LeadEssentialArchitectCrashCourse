@@ -78,30 +78,13 @@ class ListViewController: UITableViewController {
 			}
             
 		} else if fromCardsScreen {
-			
             service?.loadItems { [weak self] result in
-				DispatchQueue.mainAsyncIfNeeded {
-                    self?.handleAPIResult(result)
-				}
+                self?.handleAPIResult(result)
 			}
             
 		} else if fromSentTransfersScreen || fromReceivedTransfersScreen {
-			
-            TransfersAPI.shared.loadTransfers { [weak self, longDateStyle, fromSentTransfersScreen] result in
-				DispatchQueue.mainAsyncIfNeeded {
-                    self?.handleAPIResult(result
-                        .map({ transfers in
-                            transfers
-                                .filter { transfer in
-                                    fromSentTransfersScreen ? transfer.isSender : !transfer.isSender
-                                }
-                                .map { transfer in
-                                    ItemViewModel(transfer, longDateStyle: longDateStyle, selection: { [weak self] in
-                                        self?.select(transfer)
-                                    })
-                                }
-                        }))
-				}
+            service?.loadItems { [weak self] result in    
+                self?.handleAPIResult(result)
 			}
 		} else {
 			fatalError("unknown context")

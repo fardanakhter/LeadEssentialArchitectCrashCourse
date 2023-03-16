@@ -66,12 +66,20 @@ class MainTabBarController: UITabBarController {
 	private func makeSentTransfersList() -> ListViewController {
 		let vc = ListViewController()
 		vc.fromSentTransfersScreen = true
+        vc.service = TransfersAPIItemServiceAdaptor(api: TransfersAPI.shared,
+                                                    longDateStyle: true,
+                                                    fromSentTransfersScreen: true,
+                                                    select: { [weak vc] transfer in vc?.select(transfer) })
 		return vc
 	}
 	
 	private func makeReceivedTransfersList() -> ListViewController {
 		let vc = ListViewController()
 		vc.fromReceivedTransfersScreen = true
+        vc.service = TransfersAPIItemServiceAdaptor(api: TransfersAPI.shared,
+                                                    longDateStyle: false,
+                                                    fromSentTransfersScreen: false,
+                                                    select: { [weak vc] transfer in vc?.select(transfer) })
 		return vc
 	}
 	
